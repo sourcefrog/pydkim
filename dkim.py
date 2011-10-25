@@ -582,6 +582,9 @@ def verify(message, debuglog=None):
             if debuglog is not None:
                 print >>debuglog, "invalid format in _domainkey txt record"
             return False
+    if 'p' not in pub:
+        print >>debuglog, "no p= public key in domainkey record %r" % s
+        return False
     x = asn1_parse(ASN1_Object, base64.b64decode(pub['p']))
     # Not sure why the [1:] is necessary to skip a byte.
     pkd = asn1_parse(ASN1_RSAPublicKey, x[0][1][1:])
